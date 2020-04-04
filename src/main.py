@@ -22,12 +22,12 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
     list_test_eer_KNN=[]
     list_test_eer_GMM=[]
     
-    if os.path.isfile('model/'+breath_type+'/list_test_acc_'+model_name):
-        with open('model/'+breath_type+'/list_test_acc_'+model_name, 'rb') as filehandle:
+    if os.path.isfile('results/models/'+breath_type+'/list_test_acc_'+model_name):
+        with open('results/models/'+breath_type+'/list_test_acc_'+model_name, 'rb') as filehandle:
             list_test_acc = pickle.load(filehandle)
-        with open('model/'+breath_type+'/list_test_eer_KNN_'+model_name, 'rb') as filehandle:
+        with open('results/models/'+breath_type+'/list_test_eer_KNN_'+model_name, 'rb') as filehandle:
             list_test_eer_KNN = pickle.load(filehandle)
-        with open('model/'+breath_type+'/list_test_eer_GMM_'+model_name, 'rb') as filehandle:
+        with open('results/models/'+breath_type+'/list_test_eer_GMM_'+model_name, 'rb') as filehandle:
             list_test_eer_GMM = pickle.load(filehandle)
 
     for eval_time in range(1):
@@ -98,19 +98,19 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
         list_test_eer_KNN.append(eer_KNN)
         list_test_eer_GMM.append(eer_GMM)
         
-        # plt.savefig('model/plt/multi_modality_grad_TCN.png')
+        # plt.savefig('results/outputs/multi_modality_grad_TCN.png')
         # plt.clf()
         # plt.plot(list_train_loss,color='blue', label = 'train loss')
         # plt.plot(list_valid_loss,color='green', label = 'valid loss')
-        # plt.savefig('model/plt/acce_gyro_loss.png')
+        # plt.savefig('results/outputs/acce_gyro_loss.png')
         # exit()
         # torch.save(model, "checkpoints/model_epoch_"+str(eval_time))
   
-    with open('model/'+breath_type+'/list_test_acc_'+model_name, 'wb') as filehandle:
+    with open('results/models/'+breath_type+'/list_test_acc_'+model_name, 'wb') as filehandle:
         pickle.dump(list_test_acc, filehandle)
-    with open('model/'+breath_type+'/list_test_eer_KNN_'+model_name, 'wb') as filehandle:
+    with open('results/models/'+breath_type+'/list_test_eer_KNN_'+model_name, 'wb') as filehandle:
         pickle.dump(list_test_eer_KNN, filehandle)
-    with open('model/'+breath_type+'/list_test_eer_GMM_'+model_name, 'wb') as filehandle:
+    with open('results/models/'+breath_type+'/list_test_eer_GMM_'+model_name, 'wb') as filehandle:
         pickle.dump(list_test_eer_GMM, filehandle)
 
 
