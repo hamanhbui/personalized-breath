@@ -22,12 +22,12 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
     list_test_eer_KNN=[]
     list_test_eer_GMM=[]
     
-    if os.path.isfile('results/models/'+breath_type+'/list_test_acc_'+model_name):
-        with open('results/models/'+breath_type+'/list_test_acc_'+model_name, 'rb') as filehandle:
+    if os.path.isfile('results/outputs/'+breath_type+'/list_test_acc_'+model_name):
+        with open('results/outputs/'+breath_type+'/list_test_acc_'+model_name, 'rb') as filehandle:
             list_test_acc = pickle.load(filehandle)
-        with open('results/models/'+breath_type+'/list_test_eer_KNN_'+model_name, 'rb') as filehandle:
+        with open('results/outputs/'+breath_type+'/list_test_eer_KNN_'+model_name, 'rb') as filehandle:
             list_test_eer_KNN = pickle.load(filehandle)
-        with open('results/models/'+breath_type+'/list_test_eer_GMM_'+model_name, 'rb') as filehandle:
+        with open('results/outputs/'+breath_type+'/list_test_eer_GMM_'+model_name, 'rb') as filehandle:
             list_test_eer_GMM = pickle.load(filehandle)
 
     for eval_time in range(1):
@@ -54,7 +54,8 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
         test_loader = DataLoader(test_set,batch_size=128, shuffle=True)
 
         optimizer=torch.optim.Adam(model.parameters(), lr=0.001)
-        early_stopping = EarlyStopping(checkpoint_name = model_name+'_'+'checkpoint.pt', lr_scheduler = StepLR(optimizer, step_size=1, gamma=0.5), patiences=[20, 15, 10, 5])
+        early_stopping = EarlyStopping(checkpoint_name = 'results/models/'+breath_type+'/'+model_name+'_'+'checkpoint.pt', 
+            lr_scheduler = StepLR(optimizer, step_size=1, gamma=0.5), patiences=[20, 15, 10, 5])
 
         epoch=0
         coverage = False
@@ -79,7 +80,7 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
                 if early_stopping.early_stop:
                     break
 
-        model.load_state_dict(torch.load(model_name+'_'+'checkpoint.pt'))
+        model.load_state_dict(torch.load('results/models/'+breath_type+'/'+model_name+'_'+'checkpoint.pt'))
         train_losses, train_correct = test(test_loader=train_loader,model=model,loss_fn=nn.CrossEntropyLoss())
         print('Train set: Average loss: {:.4f}, Accuracy: {}/{} ({:.0f}%)'.format(
             np.mean(train_losses), train_correct, len(train_loader.dataset),
@@ -106,11 +107,11 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
         # exit()
         # torch.save(model, "checkpoints/model_epoch_"+str(eval_time))
   
-    with open('results/models/'+breath_type+'/list_test_acc_'+model_name, 'wb') as filehandle:
+    with open('results/outputs/'+breath_type+'/list_test_acc_'+model_name, 'wb') as filehandle:
         pickle.dump(list_test_acc, filehandle)
-    with open('results/models/'+breath_type+'/list_test_eer_KNN_'+model_name, 'wb') as filehandle:
+    with open('results/outputs/'+breath_type+'/list_test_eer_KNN_'+model_name, 'wb') as filehandle:
         pickle.dump(list_test_eer_KNN, filehandle)
-    with open('results/models/'+breath_type+'/list_test_eer_GMM_'+model_name, 'wb') as filehandle:
+    with open('results/outputs/'+breath_type+'/list_test_eer_GMM_'+model_name, 'wb') as filehandle:
         pickle.dump(list_test_eer_GMM, filehandle)
 
 
