@@ -10,8 +10,8 @@ def get_embedded_set(loader,model):
     X_out, Y_out=[],[]
     for batch_idx, (samples,labels) in enumerate(loader):
         if len(samples) == 2:
-            feature_1 = samples[1].float()
-            feature_2 = samples[0].float()
+            feature_1 = samples[0].float()
+            feature_2 = samples[1].float()
             if torch.cuda.is_available():
                 feature_1 = feature_1.cuda()
                 feature_2 = feature_2.cuda()

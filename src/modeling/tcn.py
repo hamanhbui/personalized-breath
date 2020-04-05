@@ -97,9 +97,9 @@ class Multimodality_TCN(nn.Module):
         self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
 
     def forward(self, acce_gyro_features, audio_features):
-        sensor_features=self.acce_gyro_TCN(acce_gyro_features)
+        acce_gyro_features=self.acce_gyro_TCN(acce_gyro_features)
         audio_features=self.audio_TCN(audio_features)
-        merged_features=torch.cat((sensor_features,audio_features),dim=1)
+        merged_features=torch.cat((acce_gyro_features,audio_features),dim=1)
         merged_features = self.sharing_TCN(merged_features)
         out = self.fc(merged_features[:, :, -1])
         return out
