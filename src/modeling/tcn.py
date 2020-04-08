@@ -14,18 +14,27 @@ class Chomp1d(nn.Module):
 class TemporalBlock(nn.Module):
     def __init__(self, n_inputs, n_outputs, kernel_size, stride, dilation, padding, dropout=0.2):
         super(TemporalBlock, self).__init__()
-        self.conv = weight_norm(nn.Conv1d(n_inputs, n_outputs, kernel_size,
+        self.conv1 = weight_norm(nn.Conv1d(n_inputs, n_outputs, kernel_size,
                                            stride=stride, padding=padding, dilation=dilation))
-        self.chomp = Chomp1d(padding)
-        self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(dropout)
+        self.chomp1 = Chomp1d(padding)
+        self.relu1 = nn.ReLU()
+        self.dropout1 = nn.Dropout(dropout)
 
-        self.net = nn.Sequential(self.conv, self.chomp, self.relu, self.dropout)
+        self.conv2 = weight_norm(nn.Conv1d(n_outputs, n_outputs, kernel_size,
+                                           stride=stride, padding=padding, dilation=dilation))
+        self.chomp2 = Chomp1d(padding)
+        self.relu2 = nn.ReLU()
+        self.dropout2 = nn.Dropout(dropout)
+
+        self.net = nn.Sequential(self.conv1, self.chomp1, self.relu1, self.dropout1,
+                                 self.conv2, self.chomp2, self.relu2, self.dropout2)
         self.downsample = nn.Conv1d(n_inputs, n_outputs, 1) if n_inputs != n_outputs else None
+        self.relu = nn.ReLU()
         self.init_weights()
 
     def init_weights(self):
-        self.conv.weight.data.normal_(0, 0.01)
+        self.conv1.weight.data.normal_(0, 0.01)
+        self.conv2.weight.data.normal_(0, 0.01)
         if self.downsample is not None:
             self.downsample.weight.data.normal_(0, 0.01)
 
@@ -55,8 +64,8 @@ class Audio_TCN(nn.Module):
     def __init__(self, no_outer):
         super(Audio_TCN, self).__init__()
         self.audio_TCN = nn.Sequential(
-            TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=3, dropout=0.2),
-            TemporalConvNet(num_inputs=32, num_dilateds = list(range(4, 8)), num_channels=[128]*4, kernel_size=3, dropout=0.2)
+            TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=8, dropout=0.2),
+            TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[128]*4, kernel_size=8, dropout=0.2)
         )
         self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
 
@@ -69,8 +78,8 @@ class Acce_Gyro_TCN(nn.Module):
     def __init__(self, no_outer):
         super(Acce_Gyro_TCN, self).__init__()
         self.acce_gyro_TCN = nn.Sequential(
-            TemporalConvNet(num_inputs=6, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=3, dropout=0.2),
-            TemporalConvNet(num_inputs=32, num_dilateds = list(range(4, 8)), num_channels=[128]*4, kernel_size=3, dropout=0.2)
+            TemporalConvNet(num_inputs=6, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=8, dropout=0.2),
+            TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[128]*4, kernel_size=8, dropout=0.2)
         )
         self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
 
@@ -82,9 +91,9 @@ class Acce_Gyro_TCN(nn.Module):
 class Multimodality_TCN(nn.Module):
     def __init__(self, no_outer):
         super(Multimodality_TCN, self).__init__()
-        self.audio_TCN = TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=3, dropout=0.2)
-        self.acce_gyro_TCN = TemporalConvNet(num_inputs=6, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=3, dropout=0.2)
-        self.sharing_TCN = TemporalConvNet(num_inputs=64, num_dilateds = list(range(4, 8)), num_channels=[128]*4, kernel_size=3, dropout=0.2)
+        self.audio_TCN = TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=8, dropout=0.2)
+        self.acce_gyro_TCN = TemporalConvNet(num_inputs=6, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=8, dropout=0.2)
+        self.sharing_TCN = TemporalConvNet(num_inputs=64, num_dilateds = list(range(0, 4)), num_channels=[128]*4, kernel_size=8, dropout=0.2)
         self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
 
     def forward(self, acce_gyro_features, audio_features):

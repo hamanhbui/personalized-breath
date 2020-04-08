@@ -3,7 +3,7 @@ import numpy as np
 from scipy import stats
 
 breath_type="normal"
-model_name="normal_multi_cnn-lstm"
+model_name="normal_multi_tcn"
 list_test_acc=[]
 list_test_eer_KNN=[]
 list_test_eer_GMM=[]
