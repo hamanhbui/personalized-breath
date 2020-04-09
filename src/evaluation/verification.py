@@ -8,8 +8,8 @@ import torch
 
 def get_embedded_set(loader,model):
     X_out, Y_out=[],[]
-    for batch_idx, (samples,labels) in enumerate(loader):
-        if len(samples) == 2:
+    for batch_idx, (types, samples,labels) in enumerate(loader):
+        if types[0] == "Multimodality":
             feature_1 = samples[0].float()
             feature_2 = samples[1].float()
             if torch.cuda.is_available():

@@ -47,8 +47,8 @@ class EarlyStopping:
 def train(train_loader,model,loss_fn,optimizer,epoch):
     model.train()
     losses=[]
-    for batch_idx, (samples,labels) in enumerate(train_loader):
-        if len(samples) == 2:
+    for batch_idx, (types, samples,labels) in enumerate(train_loader):
+        if types[0] == "Multimodality":
             feature_1 = samples[0].float()
             feature_2 = samples[1].float()
             if torch.cuda.is_available():
@@ -87,8 +87,8 @@ def test(test_loader,model,loss_fn):
     losses = []
     correct=0
     with torch.no_grad():
-        for batch_idx, (samples,labels) in enumerate(test_loader):
-            if len(samples) == 2:
+        for batch_idx, (types, samples,labels) in enumerate(test_loader):
+            if types[0] == "Multimodality":
                 feature_1 = samples[0].float()
                 feature_2 = samples[1].float()
                 if torch.cuda.is_available():

@@ -6,6 +6,7 @@ class Audio_Dataset(Dataset):
         self.filenamelist = filenamelist
         self.root_dir=root_dir
         self.old_new_name_map=old_new_name_map
+        self.type_name = "Audio"
 
     def __len__(self):
         return len(self.filenamelist)
@@ -19,13 +20,14 @@ class Audio_Dataset(Dataset):
             subject_name=int(self.filenamelist[index].split("/")[2].split("_")[0])-1
         else:
             subject_name=self.old_new_name_map[self.filenamelist[index].split("/")[2].split("_")[0]]
-        return self.data_extracted_loader(self.root_dir+self.filenamelist[index]),subject_name
+        return self.type_name, self.data_extracted_loader(self.root_dir+self.filenamelist[index]), subject_name
 
 class Acce_Gyro_Dataset(Dataset):
     def __init__(self,root_dir,filenamelist,old_new_name_map):
         self.filenamelist = filenamelist
         self.root_dir=root_dir
         self.old_new_name_map=old_new_name_map
+        self.type_name = "Acce_Gyro"
 
     def __len__(self):
         return len(self.filenamelist)
@@ -39,13 +41,14 @@ class Acce_Gyro_Dataset(Dataset):
             subject_name=int(self.filenamelist[index].split("/")[2].split("_")[0])-1
         else:
             subject_name=self.old_new_name_map[self.filenamelist[index].split("/")[2].split("_")[0]]
-        return self.data_extracted_loader(self.root_dir+self.filenamelist[index]),subject_name
+        return self.type_name, self.data_extracted_loader(self.root_dir+self.filenamelist[index]),subject_name
         
 class Multimodality_Dataset(Dataset):
     def __init__(self,root_dir,filenamelist,old_new_name_map):
         self.filenamelist = filenamelist
         self.root_dir=root_dir
         self.old_new_name_map=old_new_name_map
+        self.type_name = "Multimodality"
 
     def __len__(self):
         return len(self.filenamelist)
@@ -60,4 +63,4 @@ class Multimodality_Dataset(Dataset):
             subject_name=int(self.filenamelist[index].split("/")[2].split("_")[0])-1
         else:
             subject_name=self.old_new_name_map[self.filenamelist[index].split("/")[2].split("_")[0]]
-        return self.data_extracted_loader(self.root_dir+self.filenamelist[index]),subject_name
+        return self.type_name, self.data_extracted_loader(self.root_dir+self.filenamelist[index]),subject_name
