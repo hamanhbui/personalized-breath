@@ -28,8 +28,8 @@ class EarlyStopping:
             self.counter += 1
 
             if self.counter >= self.patiences[self.patience_idx]:
+                model.load_state_dict(torch.load(self.checkpoint_name))
                 if self.patience_idx < self.ignore_times - 1:
-                    model.load_state_dict(torch.load(self.checkpoint_name))
                     self.lr_scheduler.step()
                     self.patience_idx += 1
                     self.counter = 0
