@@ -2,8 +2,8 @@ import pickle
 import numpy as np
 from scipy import stats
 
-breath_type="normal"
-model_name="normal_multi_tcn"
+breath_type="strong"
+model_name="strong_multi_cnn-lstm_4"
 list_test_acc=[]
 list_test_eer_KNN=[]
 list_test_eer_GMM=[]
@@ -23,7 +23,7 @@ with open('results/outputs/'+breath_type+'/list_test_eer_GMM_'+model_name, 'rb')
 #             list_test_acc_1 = pickle.load(filehandle)
 
 # print(stats.ttest_ind(list_test_acc,list_test_acc_1, equal_var = False))
-print(len(list_test_acc))
-print(list_test_acc)
-print(np.mean(list_test_acc))
-print(np.std(list_test_acc))
+print(len(list_test_eer_KNN))
+# print(list_test_acc)
+print(np.mean(list_test_eer_KNN)*100)
+print(np.std(list_test_eer_KNN)*100)
