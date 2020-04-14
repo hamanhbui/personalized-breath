@@ -1,5 +1,6 @@
 import os
 import numpy as np
+import pickle
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -52,13 +53,13 @@ def tsne_plot(embedded_features,labels):
     plt.show()    
 
 def main():
-    model = torch.load("model/plt/name", map_location="cpu")
+    model = Multimodality_CNN_LSTM(no_outer=0)
+    model.load_state_dict(torch.load("results/models/normal/normal_multi_cnn-lstm_0_checkpoint.pt", map_location="cpu"))
     model.eval()
-    list_test_filename=[]
-    for line in open('model/plt/list_test_filename.txt'):
-        list_test_filename.append(line.rstrip('\n'))
+    with open('list_test_filename', 'rb') as filehandle:
+        list_test_filename = pickle.load(filehandle)
     with torch.no_grad():
-        test_set = Multimodal_Dataset(root_dir="",filenamelist=list_test_filename)
+        test_set = Multimodality_Dataset(root_dir="",filenamelist=list_test_filename,old_new_name_map={})
         test_loader = DataLoader(test_set,batch_size=128, shuffle=True)
         X_test,Y_test=get_embedded_set(test_loader,model)
         Y_test,X_test=(list(t) for t in zip(*sorted(zip(Y_test, X_test))))
