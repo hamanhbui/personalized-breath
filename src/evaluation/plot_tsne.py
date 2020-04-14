@@ -36,18 +36,18 @@ def tsne_plot(embedded_features,labels):
     plt.figure(figsize=(16, 16)) 
     male_colors=['red','green','blue','black','brown','grey','orange','yellow','pink','cyan','magenta']
     female_colors=['red','blue','green','black','grey','orange','yellow','purple']   
-    females=[11,19,20,21,22]
+    females=[11-1,19-1,20-1,21-1,22-1]
     idm_color=0
     idfm_color=0
     for i, label in zip(target_ids, target_names):
         if label in females:
-            plt.scatter(X_2d[labels == i, 0], X_2d[labels == i, 1],c=female_colors[idfm_color], label=label)
+            plt.scatter(X_2d[labels == i, 0], X_2d[labels == i, 1],c=female_colors[idfm_color], label=label+1)
             idfm_color+=1
         else:
             if idm_color>=len(male_colors):
-                plt.scatter(X_2d[labels == i, 0], X_2d[labels == i, 1],c=male_colors[idm_color-len(male_colors)],marker='1', label=label)
+                plt.scatter(X_2d[labels == i, 0], X_2d[labels == i, 1],c=male_colors[idm_color-len(male_colors)],marker='1', label=label+1)
             else:
-                plt.scatter(X_2d[labels == i, 0], X_2d[labels == i, 1],c=male_colors[idm_color],marker='2', label=label)
+                plt.scatter(X_2d[labels == i, 0], X_2d[labels == i, 1],c=male_colors[idm_color],marker='2', label=label+1)
             idm_color+=1
     plt.legend(loc=2, fontsize = 'x-small')
     plt.show()    
@@ -56,7 +56,7 @@ def main():
     model = Multimodality_CNN_LSTM(no_outer=0)
     model.load_state_dict(torch.load("results/models/normal/normal_multi_cnn-lstm_0_checkpoint.pt", map_location="cpu"))
     model.eval()
-    with open('list_test_filename', 'rb') as filehandle:
+    with open('results/models/normal/list_test_filename', 'rb') as filehandle:
         list_test_filename = pickle.load(filehandle)
     with torch.no_grad():
         test_set = Multimodality_Dataset(root_dir="",filenamelist=list_test_filename,old_new_name_map={})
