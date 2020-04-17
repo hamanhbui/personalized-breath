@@ -39,7 +39,7 @@ def get_centroid_embed_vec(X_train,Y_train,no_outer):
     for subject, list_idx in subject_list_idx.items():
         if subject not in Y_out:
             Y_out.append(subject)
-        avg_embed_vec=np.zeros(24-no_outer)
+        avg_embed_vec=np.zeros(22-no_outer)
         for idx in list_idx:
             avg_embed_vec+=X_train[idx]
         avg_embed_vec=avg_embed_vec/len(list_idx)

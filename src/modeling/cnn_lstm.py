@@ -11,7 +11,7 @@ class Audio_CNN_LSTM(nn.Module):
             nn.MaxPool1d(kernel_size=6)
         )
         self.lstm = nn.LSTM(input_size=32, hidden_size=128, num_layers=1)
-        self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
+        self.fc = nn.Linear(in_features=128, out_features=22-no_outer)
 
     def forward(self, audio_features):
         audio_features = self.audio_layers(audio_features)
@@ -32,7 +32,7 @@ class Acce_Gyro_CNN_LSTM(nn.Module):
             nn.MaxPool1d(kernel_size=6)
         )
         self.lstm = nn.LSTM(input_size=32, hidden_size=128, num_layers=1)
-        self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
+        self.fc = nn.Linear(in_features=128, out_features=22-no_outer)
 
     def forward(self, acce_gyro_features):
         acce_gyro_features = self.acce_gyro_layers(acce_gyro_features)
@@ -58,7 +58,7 @@ class Multimodality_CNN_LSTM(nn.Module):
             nn.MaxPool1d(kernel_size=6)
         )
         self.lstm = nn.LSTM(input_size=64, hidden_size=128, num_layers=1)
-        self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
+        self.fc = nn.Linear(in_features=128, out_features=22-no_outer)
 
     def forward(self,acce_gyro_features,audio_features):
         acce_gyro_features=self.acce_gyro_layers(acce_gyro_features)

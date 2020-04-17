@@ -9,10 +9,10 @@ import librosa
 
 def extract_audio(file_name,sampling_rate,extractor):
     data, fs = librosa.load(file_name,sr=sampling_rate)
-    if len(data)>fs*9:
+    if len(data)>fs*4.5:
         return
     '''Padding center with max length of a breathing (9s)'''
-    data=librosa.util.pad_center(data,fs*9)
+    data=librosa.util.pad_center(data,fs*4.5)
     
     '''Extract acoustic features'''
     if extractor=='mfcc':
@@ -23,7 +23,6 @@ def extract_audio(file_name,sampling_rate,extractor):
     else:
         return -1
 
-    Zxx=Zxx[:, :-1]
     return Zxx
 
 def main():

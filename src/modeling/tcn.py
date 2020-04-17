@@ -67,7 +67,7 @@ class Audio_TCN(nn.Module):
             TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=32, dropout=0.2),
             TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[128]*4, kernel_size=32, dropout=0.2)
         )
-        self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
+        self.fc = nn.Linear(in_features=128, out_features=22-no_outer)
 
     def forward(self, audio_features):
         audio_features = self.audio_TCN(audio_features)
@@ -81,7 +81,7 @@ class Acce_Gyro_TCN(nn.Module):
             TemporalConvNet(num_inputs=6, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=32, dropout=0.2),
             TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[128]*4, kernel_size=32, dropout=0.2)
         )
-        self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
+        self.fc = nn.Linear(in_features=128, out_features=22-no_outer)
 
     def forward(self, acce_gyro_features):
         acce_gyro_features = self.acce_gyro_TCN(acce_gyro_features)
@@ -94,7 +94,7 @@ class Multimodality_TCN(nn.Module):
         self.audio_TCN = TemporalConvNet(num_inputs=32, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=32, dropout=0.2)
         self.acce_gyro_TCN = TemporalConvNet(num_inputs=6, num_dilateds = list(range(0, 4)), num_channels=[32]*4, kernel_size=32, dropout=0.2)
         self.sharing_TCN = TemporalConvNet(num_inputs=64, num_dilateds = list(range(0, 4)), num_channels=[128]*4, kernel_size=32, dropout=0.2)
-        self.fc = nn.Linear(in_features=128, out_features=24-no_outer)
+        self.fc = nn.Linear(in_features=128, out_features=22-no_outer)
 
     def forward(self, acce_gyro_features, audio_features):
         acce_gyro_features=self.acce_gyro_TCN(acce_gyro_features)

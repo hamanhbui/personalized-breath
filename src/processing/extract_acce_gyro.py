@@ -10,12 +10,12 @@ def read_acce_gyro_data(file_name):
     return data
 
 def padding_signals(segmented_df):
-    segmented_df_x_acc=librosa.util.pad_center(np.asarray(segmented_df['x_acc'].tolist()),450)
-    segmented_df_y_acc=librosa.util.pad_center(np.asarray(segmented_df['y_acc'].tolist()),450)
-    segmented_df_z_acc=librosa.util.pad_center(np.asarray(segmented_df['z_acc'].tolist()),450)
-    segmented_df_x_gyr=librosa.util.pad_center(np.asarray(segmented_df['x_gyr'].tolist()),450)
-    segmented_df_y_gyr=librosa.util.pad_center(np.asarray(segmented_df['y_gyr'].tolist()),450)
-    segmented_df_z_gyr=librosa.util.pad_center(np.asarray(segmented_df['z_gyr'].tolist()),450)
+    segmented_df_x_acc=librosa.util.pad_center(np.asarray(segmented_df['x_acc'].tolist()),226)
+    segmented_df_y_acc=librosa.util.pad_center(np.asarray(segmented_df['y_acc'].tolist()),226)
+    segmented_df_z_acc=librosa.util.pad_center(np.asarray(segmented_df['z_acc'].tolist()),226)
+    segmented_df_x_gyr=librosa.util.pad_center(np.asarray(segmented_df['x_gyr'].tolist()),226)
+    segmented_df_y_gyr=librosa.util.pad_center(np.asarray(segmented_df['y_gyr'].tolist()),226)
+    segmented_df_z_gyr=librosa.util.pad_center(np.asarray(segmented_df['z_gyr'].tolist()),226)
     segments=[segmented_df_x_acc,segmented_df_y_acc,segmented_df_z_acc,segmented_df_x_gyr,segmented_df_y_gyr,segmented_df_z_gyr]
     segments=np.asarray(segments)
     return segments
