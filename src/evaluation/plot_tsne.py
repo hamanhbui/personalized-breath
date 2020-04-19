@@ -36,7 +36,7 @@ def tsne_plot(embedded_features,labels):
     plt.figure(figsize=(16, 16)) 
     male_colors=['red','green','blue','black','brown','grey','orange','yellow','pink','cyan','magenta']
     female_colors=['red','blue','green','black','grey','orange','yellow','purple']   
-    females=[11-1,19-1,20-1,21-1,22-1]
+    females=[11-1,19-1,20-1,21-1]
     idm_color=0
     idfm_color=0
     for i, label in zip(target_ids, target_names):
