@@ -56,11 +56,9 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
         optimizer=torch.optim.Adam(model.parameters(), lr=0.001)
         early_stopping = EarlyStopping(checkpoint_name = 'results/models/'+breath_type+'/'+model_name+'_'+'checkpoint.pt', 
             lr_scheduler = StepLR(optimizer, step_size=1, gamma=0.5), patiences=[20, 15, 10, 5])
-
-        epoch=0
+        
         coverage = False
-        while True:
-            epoch+=1
+        for epoch in range(1001):
             train(train_loader=train_loader,model=model,loss_fn=nn.CrossEntropyLoss(),optimizer=optimizer,epoch=epoch)
 
             train_losses, train_correct = test(test_loader=train_loader,model=model,loss_fn=nn.CrossEntropyLoss())
