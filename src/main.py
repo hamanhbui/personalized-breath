@@ -19,16 +19,13 @@ from evaluation.verification import verification_evaluate
 def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
     print(model_name)
     list_test_acc=[]
-    list_test_eer_KNN=[]
-    list_test_eer_GMM=[]
+    list_test_eer=[]
     
     if os.path.isfile('results/outputs/'+breath_type+'/list_test_acc_'+model_name):
         with open('results/outputs/'+breath_type+'/list_test_acc_'+model_name, 'rb') as filehandle:
             list_test_acc = pickle.load(filehandle)
-        with open('results/outputs/'+breath_type+'/list_test_eer_KNN_'+model_name, 'rb') as filehandle:
-            list_test_eer_KNN = pickle.load(filehandle)
-        with open('results/outputs/'+breath_type+'/list_test_eer_GMM_'+model_name, 'rb') as filehandle:
-            list_test_eer_GMM = pickle.load(filehandle)
+        with open('results/outputs/'+breath_type+'/list_test_eer_'+model_name, 'rb') as filehandle:
+            list_test_eer = pickle.load(filehandle)
 
     # list_train_loss=[]
     # list_valid_loss=[]
@@ -92,9 +89,8 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
     list_test_filename += list_outer_test_filename
     test_set = Dataset_Loader(root_dir=root_dir,filenamelist=list_test_filename,old_new_name_map=old_new_name_map)
     test_loader = DataLoader(test_set,batch_size=128, shuffle=True)
-    eer_KNN,eer_GMM=verification_evaluate(train_loader,test_loader,model,no_outer)
-    list_test_eer_KNN.append(eer_KNN)
-    list_test_eer_GMM.append(eer_GMM)
+    eer_score = verification_evaluate(train_loader,test_loader,model,no_outer)
+    list_test_eer.append(eer_score)
         
     # plt.savefig('results/outputs/multi_modality_grad_TCN.png')
     # plt.clf()
@@ -106,10 +102,8 @@ def main(model_name, Model, Dataset_Loader, breath_type, root_dir, no_outer):
   
     with open('results/outputs/'+breath_type+'/list_test_acc_'+model_name, 'wb') as filehandle:
         pickle.dump(list_test_acc, filehandle)
-    with open('results/outputs/'+breath_type+'/list_test_eer_KNN_'+model_name, 'wb') as filehandle:
-        pickle.dump(list_test_eer_KNN, filehandle)
-    with open('results/outputs/'+breath_type+'/list_test_eer_GMM_'+model_name, 'wb') as filehandle:
-        pickle.dump(list_test_eer_GMM, filehandle)
+    with open('results/outputs/'+breath_type+'/list_test_eer_'+model_name, 'wb') as filehandle:
+        pickle.dump(list_test_eer, filehandle)
 
 
 if __name__ == "__main__":
