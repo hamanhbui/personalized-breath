@@ -54,6 +54,7 @@ class Multimodality_CNN_LSTM(nn.Module):
             nn.ReLU()
         )
         self.lstm = nn.LSTM(input_size=64, hidden_size=128, num_layers=1)
+        self.dropout = nn.Dropout(p=0.2)
         self.fc = nn.Linear(in_features=128, out_features=22-no_outer)
 
     def forward(self,acce_gyro_features,audio_features):
@@ -65,6 +66,7 @@ class Multimodality_CNN_LSTM(nn.Module):
         merged_features=torch.cat((acce_gyro_features,audio_features),dim=2)
         merged_features,_ = self.lstm(merged_features)
         merged_features = merged_features[-1]
-
+        
+        merged_features = self.dropout(merged_features)
         out = self.fc(merged_features)
         return out
