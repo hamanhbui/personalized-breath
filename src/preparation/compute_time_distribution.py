@@ -59,6 +59,10 @@ def main():
     list_strong_no=flatten(list_strong_no)
     list_deep_no=flatten(list_deep_no)
 
+    print(len(list_normal_no))
+    print(len(list_deep_no))
+    print(len(list_strong_no))
+
     print("MIN")
     print(np.min(list_normal_no))
     print(np.min(list_deep_no))
