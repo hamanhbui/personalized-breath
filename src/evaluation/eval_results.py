@@ -8,7 +8,7 @@ list_test_acc=[]
 list_test_eer_KNN=[]
 list_test_eer_GMM=[]
     
-with open('results/outputs/tcn_1/'+breath_type+'/list_test_acc_'+model_name, 'rb') as filehandle:
+with open('results/outputs/'+breath_type+'/list_test_acc_'+model_name, 'rb') as filehandle:
             list_test_acc = pickle.load(filehandle)
 # with open('results/outputs/'+breath_type+'/list_test_eer_KNN_'+model_name, 'rb') as filehandle:
 #             list_test_eer_KNN = pickle.load(filehandle)
