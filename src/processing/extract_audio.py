@@ -12,11 +12,14 @@ def extract_audio(file_name,sampling_rate,extractor):
     if len(data)>fs*4.5:
         return
     '''Padding center with max length of a breathing (9s)'''
-    data=librosa.util.pad_center(data,fs*4.5)
+    if 'strong' in file_name:
+        data=librosa.util.pad_center(data,fs*2.5)
+    else:
+        data=librosa.util.pad_center(data,fs*4.5)
     
     '''Extract acoustic features'''
     if extractor=='mfcc':
-        Zxx=librosa.feature.mfcc(data,sr=fs,n_mfcc=32,n_fft=int(sampling_rate*0.032),hop_length=int(sampling_rate*0.02))
+        Zxx=librosa.feature.mfcc(data,sr=fs,n_mfcc=20,n_fft=int(sampling_rate*0.032),hop_length=int(sampling_rate*0.02))
     elif extractor=='stft':
         Zxx=librosa.core.stft(data,n_fft=int(sampling_rate*0.032),hop_length=int(sampling_rate*0.02))
         Zxx=Zxx.astype(float)

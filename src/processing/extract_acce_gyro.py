@@ -9,13 +9,14 @@ def read_acce_gyro_data(file_name):
     data = pd.read_csv(file_name,header = None, names = column_names,delimiter='\t')
     return data
 
-def padding_signals(segmented_df):
-    segmented_df_x_acc=librosa.util.pad_center(np.asarray(segmented_df['x_acc'].tolist()),226)
-    segmented_df_y_acc=librosa.util.pad_center(np.asarray(segmented_df['y_acc'].tolist()),226)
-    segmented_df_z_acc=librosa.util.pad_center(np.asarray(segmented_df['z_acc'].tolist()),226)
-    segmented_df_x_gyr=librosa.util.pad_center(np.asarray(segmented_df['x_gyr'].tolist()),226)
-    segmented_df_y_gyr=librosa.util.pad_center(np.asarray(segmented_df['y_gyr'].tolist()),226)
-    segmented_df_z_gyr=librosa.util.pad_center(np.asarray(segmented_df['z_gyr'].tolist()),226)
+def padding_signals(segmented_df, pad_length):
+    segmented_df_x_acc=librosa.util.pad_center(np.asarray(segmented_df['x_acc'].tolist()),pad_length)
+    segmented_df_y_acc=librosa.util.pad_center(np.asarray(segmented_df['y_acc'].tolist()),pad_length)
+    segmented_df_z_acc=librosa.util.pad_center(np.asarray(segmented_df['z_acc'].tolist()),pad_length)
+    segmented_df_x_gyr=librosa.util.pad_center(np.asarray(segmented_df['x_gyr'].tolist()),pad_length)
+    segmented_df_y_gyr=librosa.util.pad_center(np.asarray(segmented_df['y_gyr'].tolist()),pad_length)
+    segmented_df_z_gyr=librosa.util.pad_center(np.asarray(segmented_df['z_gyr'].tolist()),pad_length)
+
     segments=[segmented_df_x_acc,segmented_df_y_acc,segmented_df_z_acc,segmented_df_x_gyr,segmented_df_y_gyr,segmented_df_z_gyr]
     segments=np.asarray(segments)
     return segments
@@ -28,7 +29,10 @@ def main():
             data = read_acce_gyro_data(file_name)
 
             '''Padding center with max length of a breathing (9s) sampling_rate=50Hz'''
-            extracted_features=padding_signals(data)
+            if 'strong' in file_name:
+                extracted_features=padding_signals(data, 126)
+            else:
+                extracted_features=padding_signals(data, 226)
 
             '''Write padded files to data/processed'''
             ef_file_name=file_name.replace("raw/acce-gyro","processed/acce-gyro")
