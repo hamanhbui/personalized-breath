@@ -2,11 +2,12 @@ import numpy as np
 from torch.utils.data import Dataset
 
 class Audio_Dataset(Dataset):
-    def __init__(self,root_dir,filenamelist,old_new_name_map):
+    def __init__(self,root_dir,filenamelist,old_new_name_map, object_id = None):
         self.filenamelist = filenamelist
         self.root_dir=root_dir
         self.old_new_name_map=old_new_name_map
         self.type_name = "Audio"
+        self.object_id = object_id
 
     def __len__(self):
         return len(self.filenamelist)
@@ -20,14 +21,22 @@ class Audio_Dataset(Dataset):
             subject_name=int(self.filenamelist[index].split("/")[2].split("_")[0])-1
         else:
             subject_name=self.old_new_name_map[self.filenamelist[index].split("/")[2].split("_")[0]]
+        
+        if self.object_id != None:
+            if subject_name == self.object_id:
+                subject_name = 0
+            else:
+                subject_name = 1
+
         return self.type_name, self.data_extracted_loader(self.root_dir+self.filenamelist[index]), subject_name
 
 class Acce_Gyro_Dataset(Dataset):
-    def __init__(self,root_dir,filenamelist,old_new_name_map):
+    def __init__(self,root_dir,filenamelist,old_new_name_map, object_id = None):
         self.filenamelist = filenamelist
         self.root_dir=root_dir
         self.old_new_name_map=old_new_name_map
         self.type_name = "Acce_Gyro"
+        self.object_id = object_id
 
     def __len__(self):
         return len(self.filenamelist)
@@ -41,13 +50,21 @@ class Acce_Gyro_Dataset(Dataset):
             subject_name=int(self.filenamelist[index].split("/")[2].split("_")[0])-1
         else:
             subject_name=self.old_new_name_map[self.filenamelist[index].split("/")[2].split("_")[0]]
+
+        if self.object_id != None:
+            if subject_name == self.object_id:
+                subject_name = 0
+            else:
+                subject_name = 1
+
         return self.type_name, self.data_extracted_loader(self.root_dir+self.filenamelist[index]),subject_name
-        
+
 class Multimodality_Dataset(Dataset):
-    def __init__(self,root_dir,filenamelist,old_new_name_map):
+    def __init__(self,root_dir,filenamelist,old_new_name_map, object_id = None):
         self.filenamelist = filenamelist
         self.root_dir=root_dir
         self.old_new_name_map=old_new_name_map
+        self.object_id = object_id
         self.type_name = "Multimodality"
 
     def __len__(self):
@@ -63,4 +80,11 @@ class Multimodality_Dataset(Dataset):
             subject_name=int(self.filenamelist[index].split("/")[2].split("_")[0])-1
         else:
             subject_name=self.old_new_name_map[self.filenamelist[index].split("/")[2].split("_")[0]]
+        
+        if self.object_id != None:
+            if subject_name == self.object_id:
+                subject_name = 0
+            else:
+                subject_name = 1
+
         return self.type_name, self.data_extracted_loader(self.root_dir+self.filenamelist[index]),subject_name

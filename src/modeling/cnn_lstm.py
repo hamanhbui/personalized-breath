@@ -3,14 +3,17 @@ import torch
 import torch.nn as nn
 
 class Audio_CNN_LSTM(nn.Module):
-    def __init__(self,no_outer):
+    def __init__(self,no_outer,one_vs_all = False):
         super(Audio_CNN_LSTM, self).__init__()
         self.audio_layers = nn.Sequential(
             nn.Conv1d(in_channels=20, out_channels=32, kernel_size=8),
             nn.ReLU()
         )
         self.lstm = nn.LSTM(input_size=32, hidden_size=128, num_layers=1)
-        self.fc = nn.Linear(in_features=128, out_features=20-no_outer)
+        if one_vs_all:
+            self.fc = nn.Linear(in_features=128, out_features=2)
+        else:
+            self.fc = nn.Linear(in_features=128, out_features=20-no_outer)
 
     def forward(self, audio_features):
         audio_features = self.audio_layers(audio_features)
@@ -23,14 +26,17 @@ class Audio_CNN_LSTM(nn.Module):
         return out
 
 class Acce_Gyro_CNN_LSTM(nn.Module):
-    def __init__(self,no_outer):
+    def __init__(self,no_outer, one_vs_all = False):
         super(Acce_Gyro_CNN_LSTM, self).__init__()
         self.acce_gyro_layers = nn.Sequential(
             nn.Conv1d(in_channels=6, out_channels=32, kernel_size=8),
             nn.ReLU()
         )
         self.lstm = nn.LSTM(input_size=32, hidden_size=128, num_layers=1)
-        self.fc = nn.Linear(in_features=128, out_features=20-no_outer)
+        if one_vs_all:
+            self.fc = nn.Linear(in_features=128, out_features=2)
+        else:
+            self.fc = nn.Linear(in_features=128, out_features=20-no_outer)
 
     def forward(self, acce_gyro_features):
         acce_gyro_features = self.acce_gyro_layers(acce_gyro_features)
@@ -43,7 +49,7 @@ class Acce_Gyro_CNN_LSTM(nn.Module):
         return out
 
 class Multimodality_CNN_LSTM(nn.Module):
-    def __init__(self,no_outer):
+    def __init__(self,no_outer, one_vs_all = False):
         super(Multimodality_CNN_LSTM, self).__init__()
         self.audio_layers = nn.Sequential(
             nn.Conv1d(in_channels=20, out_channels=32, kernel_size=8),
@@ -54,7 +60,10 @@ class Multimodality_CNN_LSTM(nn.Module):
             nn.ReLU()
         )
         self.lstm = nn.LSTM(input_size=64, hidden_size=128, num_layers=1)
-        self.fc = nn.Linear(in_features=128, out_features=20-no_outer)
+        if one_vs_all:
+            self.fc = nn.Linear(in_features=128, out_features=2)
+        else:
+            self.fc = nn.Linear(in_features=128, out_features=20-no_outer)
 
     def forward(self,acce_gyro_features,audio_features):
         acce_gyro_features=self.acce_gyro_layers(acce_gyro_features)
