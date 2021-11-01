@@ -1,5 +1,5 @@
 # personalized-breath
-Repo for the ACMMM20 submission: ["Personalized breath based biometric authentication with wearable multimodality"](https://drive.google.com/file/d/1Br19A6AT6fNyDWEIHElHaI89Bn7vgPNK/view?usp=sharing).
+Repo for the ACMMM20 submission: ["Personalized breath based biometric authentication with wearable multimodality"](https://arxiv.org/abs/2110.15941).
 
 ### Guideline
 To extract features:
