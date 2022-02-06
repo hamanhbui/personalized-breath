@@ -1,6 +1,16 @@
 # personalized-breath
 Repo for the ACMMM20 submission: ["Personalized breath based biometric authentication with wearable multimodality"](https://arxiv.org/abs/2110.15941).
-
+```bibtex
+@misc{bui2021personalized,
+      title={Personalized breath based biometric authentication with wearable multimodality}, 
+      author={Manh-Ha Bui and Viet-Anh Tran and Cuong Pham},
+      year={2021},
+      eprint={2110.15941},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
+**Please CITE** our paper if you find it useful in your research.
 ### Guideline
 To extract features:
 - cd personalized-breath/
